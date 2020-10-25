@@ -35,7 +35,16 @@ app.dialog.alert('Tap hold fired!');
       inputId = "map_time",
       label = "Enter time of interest",
       value = format(Sys.time(), "%H:%M")
-    )
+    ),
+  #Selectize to choose facilities
+  f7AutoComplete(
+    inputId = "map_facilities",
+    placeholder = "",
+    openIn = "popup",
+    multiple = TRUE,
+    label = "Facilities required?",
+    choices = c("Any", unique(library_date_filter$facility))
+  )
     ), #End of left panel
 
       f7Panel(title = "Right Panel", side = "right", theme = "dark", "Blabla", effect = "cover")

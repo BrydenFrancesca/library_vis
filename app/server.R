@@ -7,8 +7,8 @@ server = function(input, output) {
   as.numeric(gsub("\\:", "", input$map_time))
   })
 
-#Reactive for overall library map data
-  filtered_library_data <- reactive({
+#Reactive for library map data filtered by date and time
+  date_time_library_data <- reactive({
     library_date_filter %>%
       #Set colour based on whether library is open on at that time or not
       #If lunchtime shutting is NA, just check if time now is greater than opening and less than closing
@@ -19,10 +19,24 @@ server = function(input, output) {
         #Otherwise closed
         TRUE ~ "#FF0000")) %>%
     #Filter out only today's values
-    dplyr::filter(day == tolower(weekdays(input$map_date))) %>%
+    dplyr::filter(day == tolower(weekdays(input$map_date)))
+  })
+
+##Function to filter unless set to "any"
+  filtered_library_data <- reactive({
+  if(mean(input$map_facilities == "Any") == 1){
+    date_time_library_data() %>%
       #Remove duplicates based on facilities
       dplyr::select(-facility, available) %>%
       unique()
+  } else{
+    date_time_library_data() %>%
+      #Filter based on facilities being available
+      dplyr::filter(facility %in% input$map_facilities & available == 1)  %>%
+      #Remove duplicates based on facilities
+      dplyr::select(-facility, available) %>%
+      unique()
+  }
   })
 
 #Render map in leaflet
