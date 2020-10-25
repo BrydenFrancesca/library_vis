@@ -7,6 +7,8 @@ library(janitor)
 library(dplyr)
 library(lubridate)
 library(stringr)
+library(plotly)
+
 
 source("ui.R")
 source("server.R")

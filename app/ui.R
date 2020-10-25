@@ -1,6 +1,7 @@
 library(shiny)
 library(shinyMobile)
 library(shinyWidgets)
+source("location_data.R")
 
 
 ui = f7Page(
@@ -61,7 +62,7 @@ app.dialog.alert('Tap hold fired!');
       swipeable = TRUE,
       f7Tab(
         tabName = "Maps",
-        icon = f7Icon("email"),
+        icon = f7Icon("map"),
         active = TRUE,
         f7Shadow(
           intensity = 10,
@@ -74,29 +75,15 @@ app.dialog.alert('Tap hold fired!');
         )
       ),
       f7Tab(
-        tabName = "Tab 2",
+        tabName = "Loans",
         icon = f7Icon("today"),
         active = FALSE,
         f7Shadow(
           intensity = 10,
           hover = TRUE,
           f7Card(
-            title = "Card header",
-            f7Select(
-              inputId = "obs2",
-              label = "Distribution type:",
-              choices = c(
-                "Normal" = "norm",
-                "Uniform" = "unif",
-                "Log-normal" = "lnorm",
-                "Exponential" = "exp"
-              )
-            ),
-            plotOutput("distPlot2"),
-            footer = tagList(
-              f7Button(label = "My button", src = "https://www.google.com"),
-              f7Badge("Badge", color = "orange")
-            )
+            title = "Numbers of library loans by year",
+          plotlyOutput("lending_plot"),
           )
         )
       ),

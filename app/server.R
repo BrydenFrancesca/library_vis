@@ -1,4 +1,5 @@
-source("Location_data.R")
+source("location_data.R")
+source("loan_data.R")
 
 server = function(input, output) {
 
@@ -56,17 +57,23 @@ server = function(input, output) {
                                        time))
   })
 
-  output$distPlot2 <- renderPlot({
-    dist <- switch(
-      input$obs2,
-      norm = rnorm,
-      unif = runif,
-      lnorm = rlnorm,
-      exp = rexp,
-      rnorm
-    )
-    hist(dist(500))
+  ##Lending numbers plot
+  output$lending_plot <- renderPlotly({
+    plot_ly(loan_data_leeds,
+            x = ~year,
+            y = ~loans,
+            type = 'bar',
+            color = ~library,
+            text = ~library,
+            colors = "Spectral",
+            hovertemplate = paste(
+              "<b>%{text}</b><br><br>",
+              "Loans: %{y:.0,f}<br>",
+              "Year: %{x:.0}<br>",
+              "<extra></extra>")) %>%
+      layout(barmode = 'stack', showlegend = FALSE)
   })
+
   output$data <- renderTable({
     mtcars[, c("mpg", input$variable), drop = FALSE]
   }, rownames = TRUE)
