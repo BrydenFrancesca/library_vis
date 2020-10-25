@@ -23,12 +23,21 @@ app.dialog.alert('Tap hold fired!');
               side = "left",
               theme = "light",
               effect = "cover",
-              f7DatePicker(
-                inputId = "map_date",
-                label = "Choose date of interest",
-                value = Sys.Date(),
-                multiple = FALSE
-              )),
+    #Date selection
+    f7DatePicker(
+        inputId = "map_date",
+        label = "Choose date of interest",
+        value = Sys.Date(),
+        multiple = FALSE
+        ),
+  #Time input
+    f7Text(
+      inputId = "map_time",
+      label = "Enter time of interest",
+      value = format(Sys.time(), "%H:%M")
+    )
+    ), #End of left panel
+
       f7Panel(title = "Right Panel", side = "right", theme = "dark", "Blabla", effect = "cover")
     ),
     navbar = f7Navbar(
