@@ -8,6 +8,7 @@ library(dplyr)
 library(lubridate)
 library(stringr)
 library(plotly)
+library(wordcloud2)
 
 
 source("ui.R")

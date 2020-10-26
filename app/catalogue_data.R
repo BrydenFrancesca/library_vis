@@ -43,5 +43,6 @@ title_words <- tidytext::tidy(title_words) %>%
 title_words <- title_words[, .(count = sum(count, na.rm = TRUE)), by = list(term)]
 data.table::setorder(title_words, -count)
 
+data.table::fwrite(title_words, "data/title_words.csv")
 
 

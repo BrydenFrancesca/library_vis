@@ -48,10 +48,21 @@ app.dialog.alert('Tap hold fired!');
   )
     ), #End of left panel
 
-      f7Panel(title = "Right Panel", side = "right", theme = "dark", "Blabla", effect = "cover")
+    f7Panel(title = "Choose region of interest",
+            side = "right",
+            theme = "dark",
+      #Input to select library of interest
+      f7Select(
+        inputId = "region",
+        label = "Choose a region:",
+        choices = c("Comparison", "Leeds", "Newcastle"),
+        selected = "Comparison"
+      ),
+              effect = "cover"
+      )#End of right panel
     ),
     navbar = f7Navbar(
-      title = "Select menus on left",
+      title = "Filter data on right and left",
       hairline = FALSE,
       shadow = TRUE,
       left_panel = TRUE,
@@ -70,7 +81,7 @@ app.dialog.alert('Tap hold fired!');
     ##Map tab
           f7Card(
             title = "Map of Library locations",
-            leafletOutput("leeds_lib_map")
+            leaflet::leafletOutput("leeds_lib_map")
           )
         )
       ),
@@ -96,16 +107,8 @@ app.dialog.alert('Tap hold fired!');
           hover = TRUE,
           f7Card(
             title = "Card header",
-            f7SmartSelect(
-              inputId = "variable",
-              label = "Variables to show:",
-              c("Cylinders" = "cyl",
-                "Transmission" = "am",
-                "Gears" = "gear"),
-              multiple = TRUE,
-              selected = "cyl"
-            ),
-            tableOutput("data"),
+          #Word cloud output
+            wordcloud2::wordcloud2Output("title_cloud"),
             footer = tagList(
               f7Button(label = "My button", src = "https://www.google.com"),
               f7Badge("Badge", color = "green")

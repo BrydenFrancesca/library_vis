@@ -1,8 +1,9 @@
 source("location_data.R")
 source("loan_data.R")
+source("wordcloud_2a.R")
 
 server = function(input, output) {
-
+##Library mapping----------------------
 ##Calculation of time from input; convert from text to numeric
   now_time <- reactive({
   as.numeric(gsub("\\:", "", input$map_time))
@@ -57,15 +58,27 @@ server = function(input, output) {
                                        time))
   })
 
+  ##Library loan numbers graph----------------
+  ##Filter lending numbers dataset dependent on input
+  loan_numbers <- reactive({
+    if(input$region == "Comparison"){
+    loan_data_all %>%
+      dplyr::group_by(library = region, year) %>%
+      dplyr::summarise(loans = sum(loans, na.rm = T))
+    } else{
+    loan_data_all %>%
+      dplyr::filter(region == input$region)
+      }
+  })
+
   ##Lending numbers plot
   output$lending_plot <- renderPlotly({
-    plot_ly(loan_data_leeds,
+    plot_ly(loan_numbers(),
             x = ~year,
             y = ~loans,
             type = 'bar',
             color = ~library,
             text = ~library,
-            colors = "Spectral",
             hovertemplate = paste(
               "<b>%{text}</b><br><br>",
               "Loans: %{y:.0,f}<br>",
@@ -74,7 +87,12 @@ server = function(input, output) {
       layout(barmode = 'stack', showlegend = FALSE)
   })
 
-  output$data <- renderTable({
-    mtcars[, c("mpg", input$variable), drop = FALSE]
-  }, rownames = TRUE)
+  output$title_cloud <- wordcloud2::renderWordcloud2({
+  title_words <- data.table::fread("../data/title_words.csv")
+
+    wordcloud2a(data = title_words,
+                           size=1.6,
+                           color='random-light',
+                           backgroundColor="black")
+})
 }

@@ -1,3 +1,5 @@
+library(shiny)
+library(shinyMobile)
 library(data.table)
 library(ggplot2)
 library(leaflet)
@@ -5,6 +7,7 @@ library(janitor)
 library(dplyr)
 library(lubridate)
 library(stringr)
+
 
 #Map Leeds libraries----
 ##Download dataset
@@ -56,3 +59,6 @@ leeds_libraries <- leaflet(library_date_filter) %>%
                               "<br/>Opening hours: ",
                               time))
 leeds_libraries
+
+
+
