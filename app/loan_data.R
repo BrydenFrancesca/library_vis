@@ -5,7 +5,7 @@ loan_data_leeds <- data.table::fread("https://datamillnorth.org/download/library
   tidyr::gather(year, loans, -Issues) %>%
   dplyr::rename(library = Issues) %>%
 #Clean year figures
-  dplyr::mutate(year = gsub("_[[:digit:]][[:digit:]]", "", year)) %>%
+  dplyr::mutate(year = gsub("-[[:digit:]][[:digit:]]", "", year)) %>%
   dplyr::mutate(region = "Leeds")
 
 #Newcastle data
@@ -21,5 +21,6 @@ loan_data_newcastle <- data.table::fread("https://datamillnorth.org/download/ncc
   dplyr::mutate(region = "Newcastle")
 
 #Join data sets
-loan_data_all <- bind_rows(loan_data_leeds, loan_data_newcastle)
+loan_data_all <- bind_rows(loan_data_leeds, loan_data_newcastle) %>%
+  dplyr::filter(year > 2007)
 
