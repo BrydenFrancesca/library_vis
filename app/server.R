@@ -90,6 +90,7 @@ server = function(input, output) {
   output$title_cloud <- wordcloud2::renderWordcloud2({
   title_words <- data.table::fread("../data/title_words.csv")
 
+  #Need to use custom wordcloud function as wordcloud2 has a known issue with shiny
     wordcloud2a(data = title_words,
                            size=1.6,
                            color='random-light',
